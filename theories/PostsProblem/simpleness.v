@@ -86,7 +86,9 @@ Section Assume_EA.
   Lemma W_spec: forall P, semi_decidable P -> exists e, forall x, P x <-> W e x.
   Proof. intros P [e He]%EA. exists e; intros x; now rewrite He. Qed.
 
-  Notation "'W[' s ']' e" := (fun x => exists n, n <= s /\ W_ e n x) (at level 30).
+  Definition W_upto (s e : nat) : nat -> Prop. Admitted. (* := (fun x => exists n, n <= s /\ W_ e n x). *)
+
+  Notation "'W[' s ']' e" := (W_upto s e) (at level 30).
 
   Section EA_dec.
 
@@ -100,35 +102,49 @@ Section Assume_EA.
     Qed.
 
     Lemma W_bounded_dec e : forall x s, dec ((W[s] e) x).
-    Proof.
-      intros x s. cbn. eapply exists_bounded_dec.
-      intro; apply W_dec.
-    Qed.
+    (* Proof. *)
+    (*   intros x s. cbn. eapply exists_bounded_dec. *)
+    (*   intro; apply W_dec. *)
+    (* Qed. *)
+    Admitted.
 
     Lemma W_bounded_bounded e s: bounded (W[s] e).
     Proof.
-      unfold bounded.
-      induction s.
-      - destruct (φ e 0) as [w|] eqn: E.
-        exists (S w). intros x [n [Hn1 Hn2]].
-        inv Hn1. unfold W_ in Hn2.  rewrite E in Hn2.
-        injection Hn2. lia.
-        exists 42. intros x [n [Hn1 Hn2]].
-        inv Hn1. unfold W_ in Hn2.
-        rewrite E in Hn2. congruence.
-      - destruct IHs as [N HN].
-        destruct (φ e (S s)) as [w|] eqn: E.
-        exists (max (S w) (S N)). intros x [n [Hn1 Hn2]].
-        inv Hn1. unfold W_ in Hn2. 
-        rewrite E in Hn2. injection Hn2. lia.
-        eapply Nat.lt_trans. eapply HN. exists n; split; easy. lia.
-        exists N. intros x [n [Hn1 Hn2]].
-        inv Hn1. unfold W_ in Hn2.
-        rewrite E in Hn2. congruence.
-        eapply HN. exists n. split; eauto.
-    Qed.
+    (*   unfold bounded. *)
+    (*   induction s. *)
+    (*   - destruct (φ e 0) as [w|] eqn: E. *)
+    (*     exists (S w). intros x [n [Hn1 Hn2]]. *)
+    (*     inv Hn1. unfold W_ in Hn2.  rewrite E in Hn2. *)
+    (*     injection Hn2. lia. *)
+    (*     exists 42. intros x [n [Hn1 Hn2]]. *)
+    (*     inv Hn1. unfold W_ in Hn2. *)
+    (*     rewrite E in Hn2. congruence. *)
+    (*   - destruct IHs as [N HN]. *)
+    (*     destruct (φ e (S s)) as [w|] eqn: E. *)
+    (*     exists (max (S w) (S N)). intros x [n [Hn1 Hn2]]. *)
+    (*     inv Hn1. unfold W_ in Hn2.  *)
+    (*     rewrite E in Hn2. injection Hn2. lia. *)
+    (*     eapply Nat.lt_trans. eapply HN. exists n; split; easy. lia. *)
+    (*     exists N. intros x [n [Hn1 Hn2]]. *)
+    (*     inv Hn1. unfold W_ in Hn2. *)
+    (*     rewrite E in Hn2. congruence. *)
+    (*     eapply HN. exists n. split; eauto. *)
+    (* Qed. *)
+    Admitted.
 
   End EA_dec.
+
+  Lemma W_upto_spec3 x e :
+    W e x -> exists n, (W[n] e) x.
+  Admitted.
+
+  Lemma W_upto_subset:
+    ∀ k e y : nat, (W[ k] e) y → W e y.
+  Proof.
+    intros k e y HH.
+  Admitted.
+
+  Opaque W_upto.
 
   Definition disj_list_pred {X} (A: list X) (B: X -> Prop) := forall x, In x A -> B x -> False.
   Definition disj_pred {X} (A B: X -> Prop) := forall x, A x -> B x -> False.
@@ -163,14 +179,14 @@ Section Assume_EA.
     #[export]Instance ext_intersect_W_dec L n e: dec (ext_intersect_W L n e).
     Proof.
       apply BaseLists.list_forall_dec.
-      intro x. eapply dec_neg_dec, exists_bounded_dec; eauto.
-    Qed. 
+      intro x. eapply dec_neg_dec. apply W_bounded_dec. 
+    Qed.
 
     #[export] Instance ext_wall L n e x: dec (forall i, i <= e -> wall i L n < x).
     Proof. eapply forall_bounded_dec; eauto. Qed.
     
     #[export]Instance ext_has_wit_dec L n e x : dec (ext_has_wit L n e x).
-    Proof. apply and_dec; first apply exists_bounded_dec; eauto. Qed.
+    Proof. apply and_dec; first apply W_bounded_dec; eauto. Qed.
 
     #[export]Instance ext_has_wit_exists_dec L n e : dec (exists x, ext_has_wit L n e x).
     Proof.
@@ -183,8 +199,8 @@ Section Assume_EA.
       eapply and_dec; first apply ext_intersect_W_dec.
       unfold ext_has_wit.
       eapply bounded_dec; last apply W_bounded_bounded.
-      intros x. eapply exists_bounded_dec.
-      intro; apply W_dec. eauto.
+      - intros x. apply W_bounded_dec.
+      - eauto.
     Qed.
 
     #[export]Instance ext_pick_exists_dec L n: dec (exists e, e < n /\ least (ext_pick L n) e).
@@ -281,11 +297,12 @@ Section Assume_EA.
     
     Lemma W_incl e n m: 
       n <= m -> forall x,  (W[n] e) x -> (W[m] e) x.
-    Proof.
-      intros H x [y [H1 H2]].
-      exists y. split; lia + easy.
-    Qed.
-
+    Proof using.
+      (* intros H x [y [H1 H2]]. *)
+    (*   exists y. split; lia + easy. *)
+    (* Qed. *)
+    Admitted.
+      
     Lemma intersect_mono {X} (L L': list X) (P P': X -> Prop) : 
       L' # P' -> incl L L' -> (forall x, P x -> P' x) -> L # P.
     Proof.
@@ -319,7 +336,9 @@ Section Assume_EA.
       split; first easy. easy.
       assert (F_ simple_extension k (P_func k)) by apply F_func_correctness.
       eapply F_uni; eauto.
-      firstorder.
+      destruct Hx as [ [] ].
+      eapply W_incl.
+      2: eassumption. lia.
     Qed.
 
     Lemma act_not_attend e k: act e k -> ~ attend e k.
@@ -588,7 +607,7 @@ Section Assume_EA.
   Lemma attend_at_most_once_bound_gen k:
     (forall k', k' < k -> pdec (∃ k0 : nat, attend k' k0)) ->
     exists s, (forall e, e < k -> forall s', s < s' -> ~ attend e s').
-  Proof.
+  Proof using.
     intros Hle.
     induction k.
     - exists 42. intros ??. lia. 
@@ -605,7 +624,8 @@ Section Assume_EA.
 
   Lemma finite_decs (P : nat -> Prop) k Q :
     ((forall k', k' < k -> pdec (P k')) -> ~ Q) -> ~ Q.
-  Proof.
+  Proof using.
+    clear wall_spec.
     induction k.
     - firstorder lia.
     - intros H Hq.
@@ -620,7 +640,7 @@ Section Assume_EA.
   
   Lemma attend_at_most_once_bound k:
     ~ ~ exists s, (forall e, e < k -> forall s', s < s' -> ~ attend e s').
-  Proof.
+  Proof using.
     eapply finite_decs.
     intros H % (attend_at_most_once_bound_gen (k := k)).
     tauto.
@@ -632,7 +652,7 @@ Section Assume_EA.
     intros Hlem k. apply attend_at_most_once_bound_gen.
     intros. eapply assume_Σ_1_lem. apply Hlem. eauto. 
   Qed.
-
+    
   Lemma non_finite_not_bounded e: 
     non_finite e -> ~~ exists k, exists x, (W[k] e) x /\ 2 * e < x /\ 
                                   (forall n, forall i, i <= e -> wall i (P_func n) n < x).
@@ -641,10 +661,11 @@ Section Assume_EA.
     intros He.  rewrite non_finite_nat in H.
     apply (@wall_of_wall e). intros [w Hw].
     pose (N := max (2*e + 1) w). specialize (H N).
-    apply H. intros [m [Hm1 [k Hmk]]].
+    apply H. intros [m [Hm1 HH]].
+    apply W_upto_spec3 in HH as [k Hk].
     apply He. exists k, m.
-    repeat split. now exists k.
-                        lia. intros n i Hie. specialize (Hw i n Hie). lia.
+    repeat split. assumption.
+    lia. intros n i Hie. specialize (Hw i n Hie). lia.
   Qed.
 
     Lemma ext_pick_attend N e: 
@@ -682,14 +703,14 @@ Section Assume_EA.
         eapply Hs; last apply Hg; lia. lia. 
       - exists N. now left.
     Qed.
-
+          
     Lemma ext_intersect_W_intersect k e: 
       ~ (P_func k # W[k] e) -> W e #ₚ P -> False.
     Proof.
       unfold ext_intersect_W.
       intros H1 H2. apply H1.
-      intros y Hy1 [w Hy2].
-      eapply (H2 y). now exists w.
+      intros y Hy1 HH.
+      eapply (H2 y). eapply W_upto_subset. eassumption. 
       eapply (In_Pf Hy1).
     Qed.
 

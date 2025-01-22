@@ -154,8 +154,8 @@ Section Wall.
         split; first lia. destruct He_' as [H _].
         apply H. }
       assert (e ≤ e_) by lia; clear E.
-      destruct He_', H1, H1, H1, H1, H3.
-      by eapply H5.
+      destruct He_', H1, H1, H3.
+      apply H4. assumption.
     Qed. 
 
     Fact wall_convergence_test e : ∃ b : nat, lim_to wall (wall e) b.
@@ -281,7 +281,6 @@ Section Wall.
     Qed.
     End TEST.
     
-
     Lemma eventally_wall e:
       ¬¬ (∞∀ s, ∀ x, extendP (P_func s) s x → wall e (P_func s) s < x).
     Proof.
@@ -294,8 +293,8 @@ Section Wall.
         split; first lia. destruct He_' as [H _].
         apply H. }
       assert (e ≤ e_) by lia; clear E.
-      destruct He_', H1, H1, H1, H1, H3.
-      by eapply H5.
+      destruct He_', H1, H1, H3.
+      by eapply H4.
     Qed. 
 
     Fact wall_convergence e : ¬¬ ∃ b : nat, lim_to wall (wall e) b.
