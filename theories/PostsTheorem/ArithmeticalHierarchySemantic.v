@@ -460,7 +460,7 @@ Section ArithmeticalHierarchySemantic.
   Definition Markov: Prop :=
     forall f: nat -> bool, ~(forall x, f x = false) -> exists n, f n = true.
   
-  Lemma Markov_Forster:
+  Lemma Markov_:
     Markov <-> forall f : nat -> bool, ~~ (exists n, f n = true) -> exists n, f n = true.
   Proof.
     unfold Markov. split.
