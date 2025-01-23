@@ -21,4 +21,7 @@ opam repo add coq-released https://coq.inria.fr/opam/released
 opam install coq.8.17.0 coq-equations.1.3+8.17 coq-stdpp.1.8.0
 cd theories
 make
+make html
 ```
+
+The `make html` is optional and generates html files placed in `website`.
