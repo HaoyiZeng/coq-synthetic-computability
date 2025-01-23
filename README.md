@@ -1,7 +1,7 @@
 # Post's Problem in Constructive Mathematics
 
 This project is based on the repository: 
-**Synthetic Computability Theory in Coq**(https://github.com/uds-psl/coq-synthetic-computability)
+[**Synthetic Computability Theory in Coq**](https://github.com/uds-psl/coq-synthetic-computability)
 
 ## Description
 All the proofs for the Post's Problem are in `theories/PostsProblem`.
