@@ -1,3 +1,22 @@
+# Post's Problem in Constructive Mathematics
+
+This project is based on the repository: 
+([**Synthetic Computability Theory in Coq**])(https://github.com/uds-psl/coq-synthetic-computability)
+
+## Description
+All the proofs for the Post's Problem are in `theories/PostsProblem`.
+
+- Our construction of approximative step-indexed execution and use functions are in `PostsProblem/step_indexing.v`
+- The limit lemma (Ch. IV) in `PostsProblem/limit_computability.v`
+- The construction of simple set (Ch. V) in `PostsProblem/the_priority_method.v` and `PostsProblem/lowness.v`
+- The construction of low simple set (Ch. VI) in `PostsProblem/lowness.v`
+- The solution for Post's (Ch. VII) problem is summarized in `PostsProblem/low_simple_predicates.v`
+
+
+<!-- 
+
+
+
 # Synthetic Computability Theory in Coq
 
 ## Meta
@@ -38,7 +57,7 @@ This library contains results on synthetic computability theory.
 - A definition of oracle computability and Turing reducibility in `TuringReducibility/OracleComputability.v`
 - A proof of Post's theorem (`PT`) in `TuringReducibility/SemiDec.v`
 - A proof of Post's theorem about the arithmetical hierarchy in `PostsTheorem/PostsTheorem.v`
-- A proof of the Kleene-Post theorem in `PostsTheorem/KleenePostTheorem.v`
+- A proof of the Kleene-Post theorem in `PostsTheorem/KleenePostTheorem.v` -->
 
 ## Installation
 
