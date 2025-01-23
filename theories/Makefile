@@ -11,24 +11,13 @@ clean: Makefile.coq
 	@+$(MAKE) -f Makefile.coq clean
 	rm -f Makefile.coq Makefile.coq.conf
 
-mkCoqProject: _CoqProject.in
-	yes | cp _CoqProject.in _CoqProject
-	git ls-files "*.v" | grep -v "Models/" | grep -v "ArithmeticHierarchy/" >> _CoqProject
-
-models: _CoqProject.in
-	yes | cp _CoqProject.in _CoqProject
-	git ls-files "*.v" >> _CoqProject
-	coq_makefile -f _CoqProject -o Makefile.coq
-	export TIMED
-	@+$(MAKE) -f Makefile.coq all
-
 install-models: models
 	@+$(MAKE) -f Makefile.coq install
 
 install: all
 	@+$(MAKE) -f Makefile.coq install
 
-Makefile.coq: mkCoqProject
+Makefile.coq: _CoqProject
 	coq_makefile -f _CoqProject -o Makefile.coq
 
 force Makefile _CoqProject.in: ;
