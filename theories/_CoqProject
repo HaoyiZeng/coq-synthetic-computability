@@ -19,12 +19,6 @@ CRM/kleenetree.v
 CRM/principles.v
 KolmogorovComplexity/Kolmogorov.v
 KolmogorovComplexity/Kolmogorov_gen.v
-Models/CT.v
-Models/Computability.v
-Models/LMuRecursion.v
-Models/Seval.v
-Models/Synthetic.v
-Models/Unenc.v
 PostsProblem/limit_computability.v
 PostsProblem/low_simple_predicates.v
 PostsProblem/lowness.v
