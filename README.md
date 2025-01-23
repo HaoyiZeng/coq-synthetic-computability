@@ -4,7 +4,7 @@ This project is based on the repository:
 [**Synthetic Computability Theory in Coq**](https://github.com/uds-psl/coq-synthetic-computability)
 
 ## Description
-All the proofs for the Post's Problem are in `theories/PostsProblem`.
+All the proofs for the paper *Post's Problem in Constructive Mathematics* are in `theories/PostsProblem`.
 
 - Our construction of approximative step-indexed execution and use functions are in `PostsProblem/step_indexing.v`
 - The limit lemma (Ch. IV) in `PostsProblem/limit_computability.v`
