@@ -6,11 +6,11 @@ This project is based on the repository:
 ## Description
 All the proofs for the paper *Post's Problem in Constructive Mathematics* are in `theories/PostsProblem`.
 
-- Our construction of approximative step-indexed execution and use functions are in `PostsProblem/step_indexing.v`
-- The limit lemma (Ch. IV) in `PostsProblem/limit_computability.v`
-- The construction of simple set (Ch. V) in `PostsProblem/the_priority_method.v` and `PostsProblem/simpleness.v`
-- The construction of low simple set (Ch. VI) in `PostsProblem/lowness.v`
-- The solutions for Post's problem (Ch. VII) are summarized in `PostsProblem/low_simple_predicates.v`
+- The limit lemma (Ch. IV) is in `PostsProblem/limit_computability.v`
+- The construction of simple set (Ch. V) is in `PostsProblem/the_priority_method.v` and `PostsProblem/simpleness.v`
+- The construction of low simple set (Ch. VI) is in `PostsProblem/lowness.v`
+- The solutions to Post's problem (Ch. VII) are summarized in `PostsProblem/low_simple_predicates.v`
+- Our construction of approximative step-indexed execution and use functions (Ch. VIII) are in `PostsProblem/step_indexing.v`
 
 ## Installation
 
